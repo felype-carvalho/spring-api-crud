@@ -1,0 +1,56 @@
+package com.crudspringapi.crudspringapi.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.crudspringapi.crudspringapi.model.Person;
+import com.crudspringapi.crudspringapi.repository.PersonRepository;
+import com.crudspringapi.crudspringapi.service.PersonService;
+
+@RestController
+@RequestMapping("/persons")
+public class PersonController {
+
+    @Autowired
+    private PersonService personService;
+
+    // @GetMapping
+    // public List<Person> getAll() {
+    // return personRepository.findAll();
+    // }
+
+    // @GetMapping("/{personId}")
+    // public Person getById(@PathVariable Long id) {
+    // return personRepository.findById(id).orElse(null);
+    // }
+
+    @PostMapping
+    public Person create(@RequestBody Person person) throws Exception {
+        return personService.create(person);
+    }
+
+    // @PutMapping("/{personId}/update")
+    // public Person update(@PathVariable Long id, @RequestBody Person person) {
+    // Person existingPerson = personRepository.findById(id).orElse(null);
+    // if (existingPerson != null) {
+    // person.setId(id);
+    // return personRepository.save(person);
+    // } else {
+    // return null;
+    // }
+    // }
+
+    // @DeleteMapping("/{personId}/delete")
+    // public void delete(@PathVariable Long id) {
+    // personRepository.deleteById(id);
+    // }
+}

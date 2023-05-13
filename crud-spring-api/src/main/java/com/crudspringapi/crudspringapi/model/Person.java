@@ -10,9 +10,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "person")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class Person {
     
     @Id
@@ -31,6 +40,5 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses;
     
-    // getters e setters
 }
 
