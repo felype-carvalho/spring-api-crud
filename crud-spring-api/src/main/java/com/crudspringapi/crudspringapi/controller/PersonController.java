@@ -10,10 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 
+import com.crudspringapi.crudspringapi.exceptionhandler.BadRequestException;
+import com.crudspringapi.crudspringapi.model.Address;
 import com.crudspringapi.crudspringapi.model.Person;
 import com.crudspringapi.crudspringapi.repository.PersonRepository;
+import com.crudspringapi.crudspringapi.service.AddressService;
 import com.crudspringapi.crudspringapi.service.PersonService;
 
 @RestController
@@ -22,6 +27,9 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private AddressService addressService;
 
     // @GetMapping
     // public List<Person> getAll() {
@@ -34,8 +42,9 @@ public class PersonController {
     // }
 
     @PostMapping
-    public Person create(@RequestBody Person person) throws Exception {
-        return personService.create(person);
+    @ResponseStatus(HttpStatus.CREATED);
+    public void create(@RequestBody Person person) throws BadRequestException {
+        personService.create(person);
     }
 
     // @PutMapping("/{personId}/update")

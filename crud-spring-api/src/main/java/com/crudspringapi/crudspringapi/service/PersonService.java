@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.crudspringapi.crudspringapi.exceptionhandler.BadRequestException;
 import com.crudspringapi.crudspringapi.model.Address;
 import com.crudspringapi.crudspringapi.model.Person;
 import com.crudspringapi.crudspringapi.repository.PersonRepository;
@@ -18,7 +19,9 @@ public class PersonService {
     @Autowired
     private AddressService addressService;
 
-    public Person create(Person person) throws Exception {
+    public Person create(Person person) throws BadRequestException {
+        personVerification(person);
+
         List<Address> addresses = person.getAddresses();
 
         personRepository.save(person);
@@ -26,16 +29,17 @@ public class PersonService {
         return person;
     }
 
-    private void personVerification(Person person) throws Exception {
+    private void personVerification(Person person) throws BadRequestException {
         Person personEmailVerify = personRepository.findByEmail(person.getEmail());
-        Person personCPFVerify = personRepository.findByCPF(person.getCpf());
+        Person personCPFVerify = personRepository.findByCpf(person.getCpf());
 
-        if (personEmailVerifi != null) {
+        if (personEmailVerify != null) {
             throw new BadRequestException("Email is already in use!");
         }
 
-        if (person.getLegalNumber() == null) {
-            throw new BadRequestException("Legal number is required!");
+        if (personCPFVerify != null) {
+            throw new BadRequestException("CPF is already in use!");
         }
     }
+    
 }
