@@ -89,6 +89,20 @@ public class PersonController {
         return new ResponseEntity<>(personRepository.save(_person), HttpStatus.OK);
     }
 
+    @DeleteMapping("/persons/{id}")
+    public ResponseEntity<HttpStatus> deletePerson(@PathVariable("id") long id) {
+        personRepository.deleteById(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/persons")
+    public ResponseEntity<HttpStatus> deleteAllPersons() {
+        personRepository.deleteAll();
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     private void personVerification(Person person) throws BadRequestException {
         List<Person> listPerson = new ArrayList<>();
 
