@@ -6,64 +6,78 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crudspringapi.crudspringapi.dto.PersonDto;
 import com.crudspringapi.crudspringapi.exceptionhandler.BadRequestException;
-import com.crudspringapi.crudspringapi.model.Address;
+import com.crudspringapi.crudspringapi.exceptionhandler.ResourceNotFoundException;
 import com.crudspringapi.crudspringapi.model.Person;
 import com.crudspringapi.crudspringapi.repository.PersonRepository;
 
 @Service
 public class PersonService {
-    
+
     @Autowired
     private PersonRepository personRepository;
 
-    
+    public List<Person> getAllPersons(String name) {
+        List<Person> persons = new ArrayList<Person>();
 
-    // public Person create(Person person) throws BadRequestException {
-    //     personVerification(person);
+        if (name == null) {
+            personRepository.findAll().forEach(persons::add);
+        } else {
+            personRepository.findByName(name).forEach(persons::add);
+        }
 
-    //     List<Address> addresses = person.getAddresses();
+        return persons;
+    }
 
-    //     personRepository.save(person);
-    //     addressService.create(addresses, person);
-    //     return person;
-    // }
+    public Person getPersonById(long id) {
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + id));
+        return person;
+    }
 
-    // public List<PersonDto> listAll() {
-    //     List<Person> personList = personRepository.findAll();
-    //     List<PersonDto> dtoList = new ArrayList<>();
+    public Person createPerson(Person person) {
+        personVerification(person);
 
-    //     for (Person person : personList) {
-    //         PersonDto personDto = new PersonDto();
+        Person _person = personRepository.save(
+                new Person(person.getId(), person.getName(), person.getEmail(), person.getCpf()));
 
-    //         personDto.setId(person.getId());
-    //         personDto.setName(person.getName());
-    //         personDto.setEmail(person.getEmail());
-    //         personDto.setCpf(person.getCpf());
+        return _person;
+    }
 
-    //         List <Address> addressesList = new ArrayList<>();
-    //         addressesList = addressService.findAddressesByPersonId(person.getId());
+    public Person updaPerson(long id,Person person) {
+        personVerification(person);
 
-    //         personDto.setAddresses(addressesList);
-            
-    //         dtoList.add(personDto);
-    //     }
+        Person _person = personRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not found Person with id = " + id));
 
-    //     return dtoList;
-    // }
+        _person.setName(person.getName());
+        _person.setEmail(person.getEmail());
+        _person.setCpf(person.getCpf());
 
-    // private void personVerification(Person person) throws BadRequestException {
-    //     Person personEmailVerify = personRepository.findByEmail(person.getEmail());
-    //     Person personCPFVerify = personRepository.findByCpf(person.getCpf());
+        return _person;
+    }
 
-    //     if (personEmailVerify != null) {
-    //         throw new BadRequestException("Email is already in use!");
-    //     }
+    public void deletePerson (long id) {
+        personRepository.deleteById(id);
+    }
 
-    //     if (personCPFVerify != null) {
-    //         throw new BadRequestException("CPF is already in use!");
-    //     }
-    // }
-    
+    public void deleteAllPersons () {
+        personRepository.deleteAll();
+    }
+
+    private void personVerification(Person person) throws BadRequestException {
+        List<Person> listPerson = new ArrayList<>();
+
+        personRepository.findByCpf(person.getCpf()).forEach(listPerson::add);
+        if (!listPerson.isEmpty()) {
+            throw new BadRequestException("CPF is already in use!");
+        }
+
+        personRepository.findByEmail(person.getEmail()).forEach(listPerson::add);
+        if (!listPerson.isEmpty()) {
+            throw new BadRequestException("Email is already in use!");
+        }
+
+    }
+
 }
