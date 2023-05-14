@@ -66,7 +66,29 @@ public class PersonController {
         return new ResponseEntity<>(person, HttpStatus.OK);
     }
 
-    
+    @PostMapping("/persons")
+    public ResponseEntity<Person> createTutorial(@RequestBody Person person) {
+        personVerification(person);
+
+        Person _person = personRepository.save(
+                new Person(person.getId(),person.getName(), person.getEmail(), person.getCpf()));
+        return new ResponseEntity<>(_person, HttpStatus.CREATED);
+    }
+
+    private void personVerification(Person person) throws BadRequestException {
+        List<Person> listPerson = new ArrayList<>();
+
+        personRepository.findByCpf(person.getCpf()).forEach(listPerson::add);
+        if (!listPerson.isEmpty()) {
+            throw new BadRequestException("CPF is already in use!");
+        }
+
+        personRepository.findByEmail(person.getEmail()).forEach(listPerson::add);
+        if (!listPerson.isEmpty()) {
+            throw new BadRequestException("Email is already in use!");
+        }
+
+    }
 
     // @GetMapping
     // @ResponseBody
