@@ -21,6 +21,24 @@ public class AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
+    public List<Address> getAllAddressesByPersonId(Long personId) {
+        if (!personRepository.existsById(personId)) {
+            throw new ResourceNotFoundException("Not found Person with id = " + personId);
+        }
+
+        List<Address> addresses = addressRepository.findByPersonId(personId);
+
+        return addresses;
+    }
+
+    public Address getAddressesById(Long id) {
+        Address address = addressRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not found Address with id = " + id));
+
+        return address;
+
+    }
+
     public Address createAddress(Long personId, Address addressRequest) {
         Address address = personRepository.findById(personId).map(person -> {
             addressRequest.setPerson(person);
@@ -30,18 +48,18 @@ public class AddressService {
         return address;
     }
 
-
-    // public void create(List<Address> listAddresses, Person person) throws BadRequestException{
-    //     for (Address address : listAddresses) {
-    //         address.setPerson(person);
-    //         addressRepository.save(address);
-    //     }
+    // public void create(List<Address> listAddresses, Person person) throws
+    // BadRequestException{
+    // for (Address address : listAddresses) {
+    // address.setPerson(person);
+    // addressRepository.save(address);
+    // }
     // }
 
     // public List<Address> findAddressesByPersonId(Long personId) {
-    //     List<Address> addressesList = addressRepository.findByPersonId(personId);
-        
-    //     return addressesList;
+    // List<Address> addressesList = addressRepository.findByPersonId(personId);
+
+    // return addressesList;
     // }
-    
+
 }
