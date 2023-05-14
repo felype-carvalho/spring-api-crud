@@ -71,8 +71,22 @@ public class PersonController {
         personVerification(person);
 
         Person _person = personRepository.save(
-                new Person(person.getId(),person.getName(), person.getEmail(), person.getCpf()));
+                new Person(person.getId(), person.getName(), person.getEmail(), person.getCpf()));
         return new ResponseEntity<>(_person, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/persons/{id}")
+    public ResponseEntity<Person> updatePerson(@PathVariable("id") long id, @RequestBody Person person) {
+        personVerification(person);
+
+        Person _person = personRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not found Person with id = " + id));
+
+        _person.setName(person.getName());
+        _person.setEmail(person.getEmail());
+        _person.setCpf(person.getCpf());
+
+        return new ResponseEntity<>(personRepository.save(_person), HttpStatus.OK);
     }
 
     private void personVerification(Person person) throws BadRequestException {
