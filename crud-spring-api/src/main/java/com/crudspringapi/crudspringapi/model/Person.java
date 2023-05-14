@@ -2,6 +2,8 @@ package com.crudspringapi.crudspringapi.model;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Lazy;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,13 +17,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Lazy
 @Entity
 @Table(name = "person")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Person {
     
     @Id
@@ -37,8 +39,8 @@ public class Person {
     @Column(name = "cpf")
     private String cpf;
     
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Address> addresses;
+    // @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Address> addresses;
     
 }
 

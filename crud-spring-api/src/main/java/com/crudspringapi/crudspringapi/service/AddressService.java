@@ -22,5 +22,11 @@ public class AddressService {
             addressRepository.save(address);
         }
     }
+
+    public List<Address> findAddressesByPersonId(Long personId) {
+        List<Address> addressesList = addressRepository.findByPersonId(personId);
+        
+        return addressesList;
+    }
     
 }

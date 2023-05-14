@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 
+import com.crudspringapi.crudspringapi.dto.PersonDto;
 import com.crudspringapi.crudspringapi.exceptionhandler.BadRequestException;
 import com.crudspringapi.crudspringapi.model.Address;
 import com.crudspringapi.crudspringapi.model.Person;
@@ -33,7 +35,14 @@ public class PersonController {
 
     // @GetMapping
     // public List<Person> getAll() {
-    // return personRepository.findAll();
+    // return PersonRepository.findAll();
+    // }
+
+    // @GetMapping
+    // @ResponseBody
+    // @ResponseStatus(HttpStatus.OK)
+    // public List<PersonDto> getPersons() {
+    //     return personService.listAll();
     // }
 
     // @GetMapping("/{personId}")
@@ -41,11 +50,11 @@ public class PersonController {
     // return personRepository.findById(id).orElse(null);
     // }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED);
-    public void create(@RequestBody Person person) throws BadRequestException {
-        personService.create(person);
-    }
+    // @PostMapping
+    // @ResponseStatus(HttpStatus.CREATED)
+    // public void create(@RequestBody Person person) throws BadRequestException {
+    //     personService.create(person);
+    // }
 
     // @PutMapping("/{personId}/update")
     // public Person update(@PathVariable Long id, @RequestBody Person person) {
