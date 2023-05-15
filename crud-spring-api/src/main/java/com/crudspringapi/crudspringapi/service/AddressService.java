@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crudspringapi.crudspringapi.exceptionhandler.BadRequestException;
 import com.crudspringapi.crudspringapi.exceptionhandler.ResourceNotFoundException;
 import com.crudspringapi.crudspringapi.model.Address;
-import com.crudspringapi.crudspringapi.model.Person;
 import com.crudspringapi.crudspringapi.repository.AddressRepository;
 import com.crudspringapi.crudspringapi.repository.PersonRepository;
 
@@ -48,18 +46,34 @@ public class AddressService {
         return address;
     }
 
-    // public void create(List<Address> listAddresses, Person person) throws
-    // BadRequestException{
-    // for (Address address : listAddresses) {
-    // address.setPerson(person);
-    // addressRepository.save(address);
-    // }
-    // }
+    public Address updateAddress(long id, Address addressRequest) {
+        Address address = addressRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("AddressId " + id + "not found"));
 
-    // public List<Address> findAddressesByPersonId(Long personId) {
-    // List<Address> addressesList = addressRepository.findByPersonId(personId);
+        address.setZipCode(addressRequest.getZipCode());
+        address.setStreet(addressRequest.getStreet());
+        address.setComplement(addressRequest.getComplement());
+        address.setNeighborhood(addressRequest.getNeighborhood());
+        address.setCity(addressRequest.getCity());
+        address.setState(addressRequest.getState());
+        address.setLatitude(addressRequest.getLatitude());
+        address.setLongitude(addressRequest.getLongitude());
 
-    // return addressesList;
-    // }
+        addressRepository.save(address);
+
+        return address;
+    }
+
+    public void deleteAddresss(long id) {
+        addressRepository.deleteById(id);
+    }
+
+    public void deleteAllAddressesOfPerson(Long personId) {
+        if (!personRepository.existsById(personId)) {
+            throw new ResourceNotFoundException("Not found Person with id = " + personId);
+        }
+
+        addressRepository.deleteByPersonId(personId);
+    }
 
 }
