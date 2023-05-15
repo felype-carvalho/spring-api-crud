@@ -8,7 +8,6 @@
       <a href="#about-the-project">About the Project</a>
       <ul>
         <li><a href="#build-with">Build With</a></li>
-        <li><a href="#visual">Visual</a></li>
       </ul>
     </li>
     <li>
@@ -27,8 +26,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About the project
 
-<p></p>
-<p></p>
+<p>The project is a REST API with CRUD functionality for the person and address objects. Where the relationship works like many addresses for one person.</p>
+<p>The API also has validation for duplicate email and CPF and use H2 Database was used for data persistence</p>
 
 <!-- BUILD WITH -->
 ### Build With
