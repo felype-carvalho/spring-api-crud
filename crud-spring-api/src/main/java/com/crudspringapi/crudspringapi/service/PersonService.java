@@ -31,7 +31,7 @@ public class PersonService {
 
     public Person getPersonById(long id) {
         Person person = personRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Not found Person with id = " + id));
         return person;
     }
 
